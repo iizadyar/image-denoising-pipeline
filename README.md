@@ -1,33 +1,33 @@
-# X-Ray Image Denoising Pipeline with PyTorch
+# X-Ray Image Denoising Pipeline with Classical Methods and DnCNN
 
-A modular Python/PyTorch project for evaluating classical denoising methods on chest X-ray images.
+A modular Python/PyTorch project for evaluating image denoising methods on chest X-ray images.
 
 ## Overview
 
-This project builds a complete denoising workflow for X-ray images using:
+This project compares classical denoising methods and a deep learning denoiser (DnCNN) on the PneumoniaMNIST chest X-ray dataset.
 
-- **Dataset:** PneumoniaMNIST
-- **Noise models:** Gaussian and Poisson
-- **Denoising methods:** BM3D and Wavelet denoising
-- **Evaluation metrics:** MSE, MAE, NRMSE, PSNR, and SSIM
-- **Extra analysis:** runtime per image and RGB vs grayscale comparison
+### Included methods
+- BM3D
+- Wavelet denoising
+- DnCNN
 
-The project automatically downloads the dataset, applies controlled noise, performs denoising, computes quantitative metrics, and saves figures and CSV summaries.
+### Noise models
+- Gaussian noise
+- Poisson noise
 
----
+### Evaluation metrics
+- MSE
+- MAE
+- NRMSE
+- PSNR
+- SSIM
+- Runtime per image
 
-## Main Features
-
-- Automatic dataset download with MedMNIST
-- Reproducible experiments using a fixed random seed
-- Separate Gaussian and Poisson experiments
-- Comparison of:
-  - noisy vs denoised
-  - BM3D vs Wavelet
-  - RGB vs grayscale
-- Metric summary tables
-- Runtime tracking
-- Visualization of results
+The project supports:
+- reproducible noise generation using a fixed random seed
+- fair comparison under the same dataset, same noise settings, and same test split
+- train / validation / test workflow for DnCNN
+- CSV summaries and visual plots
 
 ---
 
@@ -36,45 +36,45 @@ The project automatically downloads the dataset, applies controlled noise, perfo
 This repository uses **PneumoniaMNIST**.
 
 Important notes:
+- The original dataset contains grayscale chest X-ray images
+- The source images are single-channel
+- For the classical branch, grayscale and RGB processing can both be tested
+- In the RGB case, the grayscale image is repeated into 3 channels
+- For DnCNN, grayscale training is the most meaningful setting because the source dataset is grayscale
 
-- The original dataset contains **grayscale chest X-ray images**.
-- The **gray branch** uses the image in its original single-channel form.
-- The **RGB branch** is created by repeating the same grayscale image into 3 channels.
-- This provides a **controlled RGB-vs-gray comparison** without changing the original image content.
-
-Default experiment settings:
-
-- **Image size:** 224 × 224
-- **Split:** test
-- **Number of images:** 40
-
-We use the **test split** because this project evaluates denoising performance and does not train a deep learning model.
+### Default settings
+- Image size: 224 × 224
+- Train split: used for DnCNN training
+- Validation split: used for model selection
+- Test split: used for final comparison against classical methods
 
 ---
 
-## Methods
+## Fair Comparison Design
 
-### Noise models
-- Gaussian noise
-- Poisson noise
-
-### Denoising methods
-- BM3D
-- Wavelet denoising
-
-### Metrics
-- MSE
-- MAE
-- NRMSE
-- PSNR
-- SSIM
-- Runtime per image
+All methods are compared under the same conditions:
+- same dataset
+- same image size
+- same test split
+- same Gaussian noise settings
+- same Poisson noise settings
+- same random seed
 
 ---
 
-## Compact Result Summary
+## Main Result
 
-![Compact Summary](docs/figures/summary_table.png)
+![DnCNN Summary](docs/figures/dncnn_summary_table.png)
+
+---
+
+## Example Visual Results
+
+### Gaussian noise
+![DnCNN Gaussian Examples](docs/figures/dncnn_examples_gaussian.png)
+
+### Poisson noise
+![DnCNN Poisson Examples](docs/figures/dncnn_examples_poisson.png)
 
 ---
 
@@ -83,6 +83,7 @@ We use the **test split** because this project evaluates denoising performance a
 ```text
 image-denoising-pipeline/
 │
+├── checkpoints/
 ├── docs/
 │   └── figures/
 ├── src/
@@ -93,7 +94,11 @@ image-denoising-pipeline/
 │   ├── denoise.py
 │   ├── metrics.py
 │   ├── visualization.py
-│   └── main.py
+│   ├── main.py
+│   ├── dncnn_model.py
+│   ├── train_dncnn.py
+│   ├── compare_dncnn.py
+│   └── plot_compare_dncnn.py
 │
 ├── .gitignore
 ├── LICENSE

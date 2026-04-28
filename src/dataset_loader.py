@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from torch.utils.data import Subset
 from torchvision import transforms
 from medmnist import INFO
@@ -5,6 +7,9 @@ import medmnist
 
 
 def get_dataset(flag, size, split, root, max_images=None):
+    root = Path(root)
+    root.mkdir(parents=True, exist_ok=True)
+
     if flag not in INFO:
         raise ValueError(f"Unknown dataset flag: {flag}")
 

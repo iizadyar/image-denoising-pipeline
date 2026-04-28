@@ -3,40 +3,50 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
 OUTPUT_DIR = ROOT / "outputs"
+CHECKPOINT_DIR = ROOT / "checkpoints"
 
-# dataset
+# Dataset
 DATASET_FLAG = "pneumoniamnist"
 IMAGE_SIZE = 224
+
+# Classical pipeline
 SPLIT = "test"
 MAX_IMAGES = 40
-
-# general design
 NOISE_TYPES = ["gaussian", "poisson"]
-MODES = ["rgb", "gray"]
+MODES = ["gray", "rgb"]
 METHODS = ["bm3d", "wavelet"]
 
-# noises
+# Noise settings
 GAUSSIAN_SIGMA = 0.08
 POISSON_PEAK = 40.0
 
-# Wavelet
+# Wavelet settings
 WAVELET_NAME = "db2"
 WAVELET_METHOD = "BayesShrink"
 WAVELET_MODE = "soft"
 
-# BM3D
+# BM3D settings
 BM3D_SIGMA_GAUSSIAN = GAUSSIAN_SIGMA
 BM3D_SIGMA_ANSCOMBE = 1.0
 
-# reproducibility
+# DnCNN settings
+DN_TRAIN_NOISE_TYPES = ["gaussian", "poisson"]
+DN_MODE = "gray"
+DN_BATCH_SIZE = 8
+DN_EPOCHS = 10
+DN_LR = 1e-3
+DN_NUM_WORKERS = 2
+DN_SAVE_NAME = "dncnn_best.pth"
+
+# Reproducibility
 RANDOM_SEED = 42
 
-# output
+# Visualization
 EXAMPLE_ROWS = 4
-SAVE_DPI = 220
+SAVE_DPI = 240
 
-#plot
-COLOR_BM3D = "#4E79A7"
-COLOR_WAVELET = "#59A14F"
-COLOR_GRID = "#D9D9D9"
-COLOR_HEADER = "#222222"
+METHOD_COLORS = {
+    "bm3d": "#4C78A8",
+    "wavelet": "#54A24B",
+    "dncnn": "#E45756",
+}

@@ -8,3 +8,4 @@ scikit-image
 bm3d
 PyWavelets
 pillow
+tqdm
